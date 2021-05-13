@@ -23,10 +23,7 @@ export class AuthService implements IAuthService {
 		});
 		if (count === 1) {
 			return { data: "Welcome message" };
-		} else if (count === 4) {
-			return { count, isLuckyPerson: true };
 		}
-		// return { count: 1 };
 		return { count };
 	}
 }

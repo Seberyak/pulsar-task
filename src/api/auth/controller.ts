@@ -3,6 +3,7 @@ import { wValidatedArg } from "../../core/utils/decorators/validation";
 import {
 	APOSTLoginSchema,
 	IAPOSTLogin,
+	IRPOSTLogin,
 } from "../../../schemas/auth/validators";
 import { AuthService } from "../../core/services/auth";
 
@@ -13,7 +14,7 @@ export class AuthController {
 	@Post("login")
 	async login(
 		@wValidatedArg(APOSTLoginSchema) args: IAPOSTLogin
-	): Promise<any> {
+	): Promise<IRPOSTLogin> {
 		return this._authService.login(args);
 	}
 }

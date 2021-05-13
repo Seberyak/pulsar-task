@@ -5,12 +5,13 @@ import { AuthController } from "./api/auth/controller";
 import { AuthService } from "./core/services/auth";
 import { CounterService } from "./core/services/counter";
 import { UserService } from "./core/services/user";
+import { AppGateWay } from "./socket/gateway";
 
 require("dotenv").config();
 
 export const Resources = {
 	Controllers: [AuthController],
-	Providers: [AuthService, CounterService, UserService],
+	Providers: [AuthService, CounterService, UserService, AppGateWay],
 	Imports: [
 		TypegooseModule.forRoot(
 			`mongodb://${process.env.MONGO_IP ?? "localhost"}:${process.env

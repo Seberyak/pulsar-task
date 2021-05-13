@@ -5,12 +5,15 @@ import { IUser } from "../../../../schemas/auth/helper-schemas";
 import { toInsertKeys } from "../../../../schemas/helper-schemas";
 import { IUserModel, User } from "../../../models/typegoose/user";
 import { InjectModel } from "nestjs-typegoose";
+import { AppGateWay } from "../../../socket/gateway";
 
 export class UserService implements IUserService {
 	constructor(
 		@InjectModel(User)
-		private readonly _userModel: IUserModel
+		private readonly _userModel: IUserModel,
+		private readonly _appGateWay: AppGateWay
 	) {}
+
 	async getUserId(args: IAPOSTLogin): Promise<ObjectId> {
 		const user = await this._userModel.findOne(args);
 		if (!user) {
@@ -22,6 +25,17 @@ export class UserService implements IUserService {
 	async create(args: IAPOSTLogin): Promise<IUser> {
 		const docToSave: Omit<IUser, toInsertKeys> = args;
 		const model = new this._userModel(docToSave);
-		return model.save();
+		const newUser = await model.save();
+		await this.handleUsersCount();
+		return newUser;
+	}
+	async handleUsersCount(): Promise<void> {
+		const usersCount = await this._userModel.estimatedDocumentCount();
+		if (usersCount === 3) {
+			this._appGateWay.sentToClients(
+				"luckyPerson",
+				"You’re lucky person :)"
+			);
+		}
 	}
 }

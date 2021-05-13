@@ -6,4 +6,5 @@ import { XOR } from "../utils/xor";
 export interface IUserService {
 	getUserId(args: IAPOSTLogin): Promise<XOR<ObjectId, undefined>>;
 	create(args: IAPOSTLogin): Promise<IUser>;
+	handleUsersCount(): Promise<void>;
 }

@@ -6,7 +6,7 @@
 ## How to run:
 
 - `npm i`
-- `npm start-dev`
+- `npm run start:dev`
 
 ## Stack
 
